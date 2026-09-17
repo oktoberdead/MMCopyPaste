@@ -1,0 +1,802 @@
+/* MMCopyPaste — общий стиль попапа и страницы настроек */
+
+:root {
+  --bg: #ffffff;
+  --bg-soft: #f5f6f8;
+  --bg-hover: #eceef2;
+  --border: #e2e5ea;
+  --text: #1b1d21;
+  --text-soft: #6b7280;
+  --accent: #2f6fed;
+  --accent-soft: #e8efff;
+  --danger: #d64545;
+  --danger-soft: #fdecec;
+  --ok: #1f9d55;
+  --radius: 10px;
+  --shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1b1d21;
+    --bg-soft: #23262b;
+    --bg-hover: #2b2f36;
+    --border: #33383f;
+    --text: #e8eaed;
+    --text-soft: #9aa1ac;
+    --accent: #6c9bff;
+    --accent-soft: #22304d;
+    --danger: #ff7a7a;
+    --danger-soft: #3a2325;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font: 13px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+body.mode-popup {
+  width: 364px;
+  min-height: 220px;
+  max-height: 580px;
+}
+
+body.mode-options {
+  display: flex;
+  justify-content: center;
+  padding: 28px 16px 48px;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+}
+
+body.mode-options #app {
+  width: 100%;
+  max-width: 720px;
+}
+
+body.mode-options .app {
+  width: 100%;
+}
+
+/* --- Шапка --- */
+
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+body.mode-options .app-header {
+  padding: 0 0 14px;
+}
+
+.logo {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #2f6fed, #7a5cff);
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-title {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.app-title h1 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.app-title p {
+  margin: 1px 0 0;
+  font-size: 11px;
+  color: var(--text-soft);
+}
+
+.switch {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  user-select: none;
+  color: var(--text-soft);
+  font-size: 11px;
+}
+
+.switch input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch .track {
+  width: 34px;
+  height: 19px;
+  border-radius: 999px;
+  background: var(--border);
+  position: relative;
+  transition: background 0.15s ease;
+}
+
+.switch .track::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: var(--shadow);
+  transition: transform 0.15s ease;
+}
+
+.switch input:checked + .track {
+  background: var(--ok);
+}
+
+.switch input:checked + .track::after {
+  transform: translateX(15px);
+}
+
+.switch input:focus-visible + .track {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.switch.is-on .label-on {
+  color: var(--ok);
+  font-weight: 600;
+}
+
+/* --- Профили --- */
+
+.profiles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+body.mode-options .profiles {
+  padding: 14px 0 10px;
+}
+
+.chip {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-soft);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chip:hover {
+  background: var(--bg-hover);
+  color: var(--text);
+}
+
+/* Состояние профиля: зелёный = включён, красный = выключен. */
+.chip.is-enabled {
+  border-color: #9fd3ae;
+  color: #1f7a44;
+  background: #f0f9f2;
+}
+
+.chip.is-disabled {
+  border-color: #e3b1b1;
+  color: #a83a3a;
+  background: #fbf1f1;
+}
+
+@media (prefers-color-scheme: dark) {
+  .chip.is-enabled {
+    border-color: rgba(31, 157, 85, 0.5);
+    color: #6fce97;
+    background: rgba(31, 157, 85, 0.12);
+  }
+  .chip.is-disabled {
+    border-color: rgba(214, 69, 69, 0.5);
+    color: #ff9a9a;
+    background: rgba(214, 69, 69, 0.12);
+  }
+}
+
+.chip.is-active {
+  box-shadow: inset 0 0 0 2px var(--accent);
+  font-weight: 600;
+}
+
+.chip-add {
+  border-style: dashed;
+}
+
+/* --- Панель действий (закреплена над списком) --- */
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 3;
+}
+
+body.mode-options .toolbar {
+  padding: 14px 0 10px;
+}
+
+.toolbar .spacer {
+  flex: 1 1 auto;
+}
+
+.btn.is-off {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.row-send {
+  display: inline-block;
+  font-size: 10px;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 4px;
+  padding: 0 5px;
+  margin-right: 6px;
+  vertical-align: 1px;
+}
+
+/* --- Плейсхолдеры профиля --- */
+
+.vars {
+  margin-top: 22px;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+
+.vars h2 {
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.var-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.var-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: var(--bg-soft);
+}
+
+.var-key {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  color: var(--accent);
+}
+
+.var-value {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--text);
+  word-break: break-word;
+}
+
+.ph-hint {
+  margin-top: 5px;
+  font-size: 11px;
+  color: var(--text-soft);
+  word-break: break-word;
+}
+
+.ph-hint.is-warn {
+  color: var(--danger);
+}
+
+select.plain {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  padding: 7px 9px;
+  outline: 0;
+}
+
+select.plain:focus {
+  border-color: var(--accent);
+}
+
+/* --- Переключатель режимов Пасты/Макросы --- */
+
+.mode-toggle {
+  display: flex;
+  gap: 4px;
+  padding: 12px 14px 0;
+}
+
+body.mode-options .mode-toggle {
+  padding: 16px 0 6px;
+}
+
+.group[hidden] {
+  display: none;
+}
+
+.seg {
+  flex: 1 1 auto;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-soft);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.seg.is-active {
+  background: var(--accent-soft);
+  border-color: transparent;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* --- Поиск паст --- */
+
+.search-row {
+  padding: 10px 14px 0;
+}
+
+body.mode-options .search-row {
+  padding: 0 0 10px;
+}
+
+.search-row .search {
+  width: 100%;
+}
+
+.paste-title {
+  background: var(--bg-hover);
+  color: var(--text);
+}
+
+.paste-row .row-body {
+  cursor: pointer;
+}
+
+/* --- Дропдауны (страница настроек) --- */
+
+.collapse {
+  border-top: 1px solid var(--border);
+  margin-top: 14px;
+  padding-top: 6px;
+}
+
+.collapse-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  padding: 8px 0;
+  cursor: pointer;
+}
+
+.collapse-head .caret {
+  color: var(--text-soft);
+}
+
+.collapse-body {
+  padding-bottom: 8px;
+}
+
+/* --- Тост --- */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  background: var(--text);
+  color: var(--bg);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  z-index: 50;
+  box-shadow: var(--shadow);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+textarea.paste-text {
+  min-height: 110px;
+}
+
+/* --- Список макросов --- */
+
+.list {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 6px 8px;
+}
+
+body.mode-options .list {
+  padding: 6px 0;
+  max-height: none;
+}
+
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 8px;
+  border-radius: var(--radius);
+}
+
+.row:hover {
+  background: var(--bg-soft);
+}
+
+.row.is-disabled .row-main {
+  opacity: 0.5;
+}
+
+.row-body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.row-key {
+  display: inline-block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 6px;
+  padding: 1px 6px;
+  margin-right: 6px;
+  white-space: nowrap;
+}
+
+.row-text {
+  color: var(--text);
+  display: inline;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+body.mode-popup .row-text {
+  display: block;
+  margin-top: 3px;
+  color: var(--text-soft);
+  font-size: 12px;
+  max-height: 2.9em;
+  overflow: hidden;
+}
+
+.row-actions {
+  flex: none;
+  display: flex;
+  gap: 2px;
+}
+
+.icon-btn {
+  border: 0;
+  background: transparent;
+  color: var(--text-soft);
+  border-radius: 7px;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text);
+}
+
+.icon-btn.is-danger:hover {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.icon-btn.is-on {
+  color: var(--ok);
+}
+
+.empty {
+  padding: 26px 14px;
+  text-align: center;
+  color: var(--text-soft);
+  font-size: 12px;
+}
+
+.empty code {
+  background: var(--bg-soft);
+  border-radius: 4px;
+  padding: 1px 4px;
+}
+
+/* --- Редактор --- */
+
+.editor {
+  border-top: 1px solid var(--border);
+  padding: 12px 14px;
+  background: var(--bg-soft);
+}
+
+body.mode-options .editor {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-top: 12px;
+}
+
+.field {
+  margin-bottom: 10px;
+}
+
+.field label {
+  display: block;
+  font-size: 11px;
+  color: var(--text-soft);
+  margin-bottom: 4px;
+}
+
+.key-wrap {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.key-wrap:focus-within {
+  border-color: var(--accent);
+}
+
+.key-prefix {
+  display: flex;
+  align-items: center;
+  padding: 0 2px 0 9px;
+  color: var(--text-soft);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+}
+
+.key-wrap input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  padding: 7px 9px;
+}
+
+textarea,
+input.plain {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  padding: 7px 9px;
+  outline: 0;
+  resize: vertical;
+}
+
+textarea:focus,
+input.plain:focus {
+  border-color: var(--accent);
+}
+
+textarea {
+  min-height: 74px;
+}
+
+body.mode-options textarea {
+  min-height: 150px;
+}
+
+.editor-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.hint {
+  flex: 1 1 auto;
+  color: var(--danger);
+  font-size: 11px;
+  min-height: 14px;
+}
+
+button.btn {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+button.btn:hover {
+  background: var(--bg-hover);
+}
+
+button.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+button.btn-primary:hover {
+  filter: brightness(1.06);
+  background: var(--accent);
+}
+
+button.btn.is-danger {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+button.btn.is-danger:hover {
+  background: var(--danger-soft);
+}
+
+/* --- Подвал --- */
+
+.app-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--border);
+}
+
+body.mode-options .app-footer {
+  padding: 14px 0 0;
+  border-top: 0;
+}
+
+.app-footer .spacer {
+  flex: 1 1 auto;
+}
+
+.link {
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 2px;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.count {
+  color: var(--text-soft);
+  font-size: 11px;
+}
+
+/* --- Настройки (страница) --- */
+
+.settings {
+  margin-top: 22px;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+
+.settings h2 {
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.settings-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.settings-row .field {
+  margin-bottom: 0;
+}
+
+.settings-row .field.small {
+  width: 96px;
+}
+
+.settings-row .field.grow {
+  flex: 1 1 200px;
+}
+
+.settings-note {
+  color: var(--text-soft);
+  font-size: 11px;
+  margin: -8px 0 14px;
+}
+
+input[type="file"] {
+  display: none;
+}

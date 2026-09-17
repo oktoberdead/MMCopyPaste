@@ -1,0 +1,15 @@
+{
+  "name": "mmcopypaste",
+  "version": "0.1.0",
+  "description": "Расширение для Chrome/Firefox: шаблоны ответов (макросы) для чатов техподдержки.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "build": "node tools/build.mjs",
+    "icons": "bash tools/make-icons.sh"
+  },
+  "devDependencies": {
+    "jsdom": "^25.0.0"
+  }
+}
